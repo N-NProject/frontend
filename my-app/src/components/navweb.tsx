@@ -1,4 +1,9 @@
 "use client";
+
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -6,14 +11,13 @@ import { motion } from "framer-motion";
 import title from "@/assets/nav/title.svg";
 import { CgAdd } from "react-icons/cg";
 import { VscAccount } from "react-icons/vsc";
+import { IoIosLogOut } from "react-icons/io";
 import icons_chat from "@/assets/chat/icons_chat.svg";
 import Sidebar from "@/components/SideBar";
 
 const useSidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentSidebarTab, setCurrentSidebarTab] = useState(null);
-  const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(false);
-  const [isSubHeaderOpen, setIsSubHeaderOpen] = useState(false);
 
   const watchScreen = () => {
     if (window.innerWidth <= 1024) {
@@ -33,10 +37,6 @@ const useSidebar = () => {
     setIsSidebarOpen,
     currentSidebarTab,
     setCurrentSidebarTab,
-    isSettingsPanelOpen,
-    setIsSettingsPanelOpen,
-    isSubHeaderOpen,
-    setIsSubHeaderOpen,
   };
 };
 
@@ -48,6 +48,8 @@ const NavBarWeb: React.FC = () => {
     setCurrentSidebarTab,
   } = useSidebar();
 
+  const router = useRouter();
+
   const handleSidebarToggle = (tab: string) => {
     if (isSidebarOpen && currentSidebarTab === tab) {
       setIsSidebarOpen(false);
@@ -56,6 +58,8 @@ const NavBarWeb: React.FC = () => {
       setCurrentSidebarTab(tab);
     }
   };
+
+  
 
   return (
     <div className="bg-white w-20 z-0 h-screen md:flex hidden flex-col items-center border-solid border-r border-lightgray">
@@ -92,9 +96,9 @@ const NavBarWeb: React.FC = () => {
 
         <Link href="/chat">
           {/* 초기 사이드바 배포시 지우세여 */}
-          {/* <button
+          <button
             onClick={() => handleSidebarToggle("messagesTab")}
-            className={` transition-colors rounded-lg shadow-md hover:bg-red-700 hover:text-white focus:outline-none focus:ring focus:ring-darkpink focus:ring-offset-white focus:ring-offset-2 text-gray-500 bg-darkpink
+            className={`p-2 transition-colors rounded-lg shadow-md hover:bg-red-700 hover:text-white focus:outline-none focus:ring focus:ring-darkpink focus:ring-offset-white focus:ring-offset-2 text-gray-500 bg-darkpink
                ${
                  isSidebarOpen && currentSidebarTab === "messagesTab"
                    ? "text-white bg-primary"
@@ -103,9 +107,23 @@ const NavBarWeb: React.FC = () => {
             `}
           >
             <span className="sr-only">Toggle message panel</span>
-        
-          </button> */}
-          <Sidebar />
+            <svg
+              aria-hidden="true"
+              className="w-6 h-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+              ></path>
+            </svg>
+          </button>
+          {/* <Sidebar /> */}
         </Link>
         <Link href="/alarm">
           <button
@@ -161,26 +179,18 @@ const NavBarWeb: React.FC = () => {
             <VscAccount className="w-6 h-6" />
           </button>
         </Link>
-      </div>
 
-      {/* 초기사이드바 모션애니메이션 배포시 지울것 */}
-      {/* <motion.div
-        animate={{
-          x:
-            isSidebarOpen && currentSidebarTab === "messagesTab"
-              ? "6.5%"
-              : "-140%",
-        }}
-        transition={{ duration: 0.2 }}
-        className="fixed inset-y-0 left-[3.1rem]  flex-shrink-0 w-[30rem] bg-white border-r-2 border-indigo-100 shadow-lg  rounded-tr-3xl rounded-br-3xl "
-      >
-        {isSidebarOpen && currentSidebarTab === "messagesTab" && (
-          <section className="flex px-4 py-6">
-            <Image src={icons_chat} alt="채팅 아이콘"></Image>
-            <h2 className="text-xl">CHAT</h2>
-          </section>
-        )}
-      </motion.div> */}
+        <button
+          onClick={() => handleSidebarToggle("")}
+          className={`mt-10 p-2 transition-colors rounded-lg shadow-md hover:bg-red-700 hover:text-white focus:outline-none focus:ring focus:ring-darkpink focus:ring-offset-white focus:ring-offset-2 text-gray-500 bg-darkpink ${
+            isSidebarOpen && currentSidebarTab === ""
+              ? "text-white bg-primary"
+              : "text-gray-500 bg-white"
+          }`}
+        >
+          <IoIosLogOut className="w-6 h-6" />
+        </button>
+      </div>
     </div>
   );
 };
