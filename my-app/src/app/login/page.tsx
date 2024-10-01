@@ -59,22 +59,6 @@ export default function LoginPage() {
   }, []);
 
   const kakaoLoginHandler = () => {
-    // if (!isKakaoInitialized) {
-    //   console.error("Kakao SDK가 아직 초기화되지 않았습니다.");
-    //   return;
-    // }
-    // if (typeof window === "undefined" || !window.Kakao) {
-    //   console.error("Kakao SDK가 로드되지 않았습니다.");
-    //   return;
-    // }
-    // // Kakao SDK가 초기화되었는지 확인
-    // if (!window.Kakao.isInitialized()) {
-    //   console.error("Kakao SDK가 초기화되지 않았습니다.");
-    //   return;
-    // }
-
-    // console.log("Kakao SDK가 초기화되었습니다:", window.Kakao.isInitialized());
-
     // 로그인 요청
     window.Kakao.Auth.authorize({
       redirectUri,
@@ -85,36 +69,7 @@ export default function LoginPage() {
     router.replace("/boards");
   };
 
-  useEffect(() => {
-    const code = new URL(window.location.href).searchParams.get("code");
-    console.log("Authorization Code:", code); // 받은 인가 코드를 출력해 확인
-    if (code) {
-      // 받은 인가 코드를 백엔드로 전달
-      fetch(`http://localhost:8000/api/v1/auth/redirect?code=${code}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then(response => {
-          console.log("Response Status:", response.status);
-          return response.json();
-        })
-        .then(data => {
-          if (data.access_token) {
-            console.log("Access Token:", data.access_token);
-            // 백엔드에서 받은 토큰을 저장
-            localStorage.setItem("kakao_access_token", data.access_token);
-            router.replace("/boards"); // 로그인 성공 후 리디렉션
-          } else {
-            console.error("액세스 토큰이 없습니다.");
-          }
-        })
-        .catch(error => {
-          console.error("토큰 요청 중 오류 발생:", error);
-        });
-    }
-  }, []);
+
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
