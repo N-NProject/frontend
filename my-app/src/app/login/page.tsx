@@ -59,7 +59,7 @@ export default function LoginPage() {
   }, []);
 
   const kakaoLoginHandler = () => {
-    // 로그인 요청
+    //로그인 요청
     window.Kakao.Auth.authorize({
       redirectUri,
       scope,
@@ -67,39 +67,6 @@ export default function LoginPage() {
 
     console.log("카카오 로그인 요청");
     router.replace("/boards");
-  };
-
-
-
-  const logoutMutation = useMutation({
-    mutationFn: async () => {
-      const res = await axios.post(
-        "http://localhost:8000/api/v1/auth/logout",
-        {},
-        {
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              "kakao_access_token",
-            )}`,
-          },
-        },
-      );
-      return res.data;
-    },
-    onSuccess: () => {
-      console.log("로그아웃 성공");
-      localStorage.removeItem("kakao_access_token");
-      router.push("/login"); // 로그아웃 후 홈 페이지로 이동
-    },
-    onError: error => {
-      console.error("로그아웃 중 오류 발생:", error.message);
-    },
-  });
-
-  const kakaoLogoutHandler = () => {
-    // 로그아웃 요청
-    logoutMutation.mutate();
   };
 
   return (
@@ -117,13 +84,6 @@ export default function LoginPage() {
           disabled={!isKakaoInitialized}
         >
           <span className="text-base font-semibold">Kakao로 간편 로그인</span>
-        </button>
-
-        <button
-          onClick={kakaoLogoutHandler}
-          className="w-[22.5rem] h-[3rem] rounded-[0.25rem] bg-red-400"
-        >
-          <span className="text-base font-semibold">로그아웃</span>
         </button>
       </div>
     </main>
