@@ -113,7 +113,7 @@ const MyPage = () => {
         <div className="flex flex-col mx-[9rem] w-[30rem] h-full xl:w-[67.75rem] lg:w-[50rem] md:w-[40rem]">
           <h1 className="mb-[2rem] text-[20px]">작성한 게시글</h1>
 
-          <div className="write_post overflow-y-hidden grid grid-cols-1 xl:grid-cols-2 gap-6 xl:gap-8 p-[1.5rem]">
+          <div className="write_post overflow-y-auto h-[20rem]  gap-6 p-[1.5rem] grid grid-cols-1 min-h-9 xl:grid-flow-col xl:overflow-x-auto xl:grid-cols-none xl:grid-rows-2 xl:gap-8 ">
             {mypageData?.createdBoards?.data.map((data: Board) => (
               <PostPreview
                 key={data.id}
@@ -131,7 +131,7 @@ const MyPage = () => {
           </div>
 
           <h1 className="mt-[2rem] mb-[2rem] text-[20px]">참여한 게시글</h1>
-          <div className="write_post overflow-y-hidden grid grid-cols-1 xl:grid-cols-2 gap-6 xl:gap-8 py-[2rem]">
+          <div className="join_post overflow-y-auto h-[20rem]  gap-6 p-[1.5rem] grid grid-cols-1 min-h-9 xl:grid-flow-col xl:overflow-x-auto xl:grid-cols-none xl:grid-rows-2 xl:gap-8 ">
             {mypageData?.joinedBoards?.data.length === 0 ? (
               <div>참여한 게시글이 없습니다.</div>
             ) : (
