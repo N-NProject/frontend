@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import LocationIcon from "@/assets/previewImages/LocationIcon.png";
-import TimeIcon from "@/assets/previewImages/TimeIcon.png";
-import PersonnelIcon from "@/assets/previewImages/PersonnelIcon.png";
+import LocationIcon from "@/assets/previewImages/LocationIcon.svg";
+import TimeIcon from "@/assets/previewImages/TimeIcon.svg";
+import PersonnelIcon from "@/assets/previewImages/PersonnelIcon.svg";
 
 interface PostPreviewProps {
   boardId: number;
@@ -14,7 +14,7 @@ interface PostPreviewProps {
   date: string;
   maxCapacity: number;
   locationName: string;
-  status?: "OPEN" | "CLOSED";
+  status?: "OPEN" | "CLOSE";
   currentPerson: number;
   link?: string; // 추가된 부분
   onClick?: () => void; // 추가된 부분
@@ -55,6 +55,10 @@ const PostPreview: React.FC<PostPreviewProps> = ({
         `https://meetingsquare.site/sse/board/${boardId}`,
       );
 
+      // const eventSource = new EventSource(
+      //   `http://localhost:8000/sse/board/${boardId}`,
+      // );
+
       eventSource.onmessage = (event: MessageEvent) => {
         const data = JSON.parse(event.data);
         setCurrentPerson(data.currentPerson);
@@ -80,14 +84,16 @@ const PostPreview: React.FC<PostPreviewProps> = ({
     tag && tag.length > 0 ? categoryImages[tag[0]] : categoryImages["기타"];
 
   const content = (
-    <div className="flex flex-row w-[30rem] xl:w-[32rem] h-32 bg-white rounded-3xl p-3 border border-1 border-lightgray cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-105 hover:bg-lightgray hover:border-darkpink ">
+    <div className="flex flex-row w-[24rem] md:w-[32rem] h-32 bg-white rounded-3xl p-3 border border-1 border-lightgray cursor-pointer hover:bg-[#EEEEEE]">
       <Image
         src={imageSrc} // 선택된 이미지 사용
         alt="Preview Image"
+        width={102}
+        height={102}
         priority
       />
       <div className="ml-3">
-        <div className="flex justify-between items-center mb-1.5 w-[21rem] xl:w-[23rem]">
+        <div className="flex justify-between items-center mb-1.5 w-[15rem] md:w-[23rem]">
           <p className={`w-fit ${tagColor} px-2.5 py-0.5 rounded-xl text-xs`}>
             {tag && tag.length > 0 ? tag[0] : "알 수 없음"}
           </p>
@@ -101,17 +107,17 @@ const PostPreview: React.FC<PostPreviewProps> = ({
             </p>
           )}
         </div>
-        <p className="text-base font-semibold mb-8">{title}</p>
+        <p className="text-base font-semibold mb-8 truncate w-[15rem] md:w-[23rem]">{title}</p>
         <div className="flex flex-row">
           <div className="flex flex-row mr-3 items-center">
             <Image
               src={LocationIcon}
               alt="Location Icon Image"
-              width={18}
-              height={18}
+              width={16}
+              height={16}
               priority
             />
-            <span className="text-xs ml-1 text-gray-500 truncate w-[9rem] xl:w-[11rem]">{`${locationName}`}</span>
+            <span className="text-[10px] md:text-xs ml-1 text-gray truncate w-[5rem] md:w-[12rem]">{`${locationName}`}</span>
           </div>
           <div className="flex flex-row mr-3 items-center">
             <Image
@@ -121,17 +127,17 @@ const PostPreview: React.FC<PostPreviewProps> = ({
               height={16}
               priority
             />
-            <span className="text-xs ml-2 text-gray-500">{`${date}`}</span>
+            <span className="text-[10px] md:text-xs ml-2 text-gray">{`${date}`}</span>
           </div>
           <div className="flex flex-row items-center">
             <Image
               src={PersonnelIcon}
               alt="Personnel Icon Image"
-              width={22}
-              height={22}
+              width={16}
+              height={16}
               priority
             />
-            <span className="text-xs ml-1 text-gray-500">{`${currentPerson}/${maxCapacity}`}</span>
+            <span className="text-[10px] md:text-xs ml-1 text-gray">{`${currentPerson}/${maxCapacity}`}</span>
           </div>
         </div>
       </div>

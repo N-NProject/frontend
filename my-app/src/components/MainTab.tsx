@@ -17,11 +17,11 @@ const MainTab: React.FC<MainTabProps> = ({ onCategoryChange }) => {
   };
 
   return (
-    <div className="flex justify-center md:space-x-[2rem] lg:space-x-[2.75rem] xl:space-x-[6.75rem]">
+    <div className="flex justify-center items-center md:space-x-[2rem] lg:space-x-[2.75rem] xl:space-x-[4rem]">
       {categories.map((category: string) => (
         <button
           key={category}
-          className={`px-4 py-2 w-[6rem] lg:w-[8rem] text-base md:text-lg lg:text-2xl font-semibold ${
+          className={`w-[5rem] lg:w-[8rem] text-base md:text-lg lg:text-lg font-semibold ${
             activeTab === category ? "text-black" : "text-darkgray"
           }`}
           onClick={() => handleTabClick(category)}

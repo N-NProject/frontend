@@ -192,8 +192,12 @@ const Post = ({ params }: { params: { slug: number } }) => {
   useEffect(() => {
     //getMutation.mutate(params.slug);
 
+    // const eventSource = new EventSource(
+    //   `https://meetingsquare.site/sse/board/${params.slug}`,
+    // );
+
     const eventSource = new EventSource(
-      `https://meetingsquare.site/sse/board/${params.slug}`,
+      `https://meetingsquare.site/sse/board/${params.slug}`
     );
 
     eventSource.onmessage = (event: MessageEvent) => {

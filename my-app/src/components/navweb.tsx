@@ -51,7 +51,9 @@ const NavBarWeb: React.FC = () => {
 
   return (
     <div className="bg-white w-20 z-0 h-screen md:flex hidden flex-col items-center border-solid border-r border-lightgray">
-      <Image className="bg-white w-20 h-30" src={title} alt="title" />
+      <Link href="/boards">
+        <Image className="bg-white w-20 h-30" src={title} alt="title" />
+      </Link>
       <nav></nav>
       <div className="h-[100rem] mt-[1rem] flex flex-col justify-around">
         <Link href="/boards">

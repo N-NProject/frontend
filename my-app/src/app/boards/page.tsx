@@ -8,6 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Board } from "@/types/boards";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import Lottie from "lottie-react";
+import loadingAnimation from "@/assets/loading.json";
 
 const getBoards = async (page: number, limit: number) => {
   const res = await api.get("/api/v1/boards/", {
@@ -19,7 +21,7 @@ const getBoards = async (page: number, limit: number) => {
 
 const Boards = () => {
   const [selectedCategory, setSelectedCategory] = useState("전체");
-  const [selectedStatus, setSelectedStatus] = useState<"OPEN" | "CLOSED" | "">(
+  const [selectedStatus, setSelectedStatus] = useState<"OPEN" | "CLOSE" | "">(
     "",
   );
   const [page, setPage] = useState(1);
@@ -62,8 +64,8 @@ const Boards = () => {
     setSelectedCategory(category);
   };
 
-  const handleStatusChange = (status: "OPEN" | "CLOSED") => {
-    setSelectedStatus((prevStatus: "OPEN" | "CLOSED" | "") =>
+  const handleStatusChange = (status: "OPEN" | "CLOSE") => {
+    setSelectedStatus((prevStatus: "OPEN" | "CLOSE" | "") =>
       prevStatus === status ? "" : status,
     );
   };
@@ -86,7 +88,7 @@ const Boards = () => {
 
   return (
     <main className="flex min-h-screen flex-col bg-white">
-      <div className="flex justify-center lg:justify-start lg:pl-[4rem] xl:pl-[6rem] py-4 md:py-7">
+      <div className="flex justify-center lg:justify-start mt-4 md:mt-0 lg:pl-[4rem] xl:pl-[6rem] py-4 md:py-7">
         <MainTab onCategoryChange={handleCategoryChange} />
       </div>
       <div className="flex justify-center lg:justify-start gap-[0.75rem] lg:gap-[1.25rem] px-[2rem] lg:px-[6rem] xl:px-[8rem]">
@@ -101,9 +103,9 @@ const Boards = () => {
           <span className="text-xs">모집 중</span>
         </button>
         <button
-          onClick={() => handleStatusChange("CLOSED")}
+          onClick={() => handleStatusChange("CLOSE")}
           className={`w-[5rem] lg:w-[6.25rem] h-[2rem] lg:h-[2.25rem] border border-1 rounded-[1.25rem] ${
-            selectedStatus === "CLOSED"
+            selectedStatus === "CLOSE"
               ? "border-darkpink bg-pink"
               : "border-gray"
           }`}
@@ -111,11 +113,17 @@ const Boards = () => {
           <span className="text-xs">모집 종료</span>
         </button>
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center items-center py-[1rem]">
         {isLoading ? (
-          <p>Loading...</p>
+          <div className="flex justify-center items-center h-[50vh]">
+            <Lottie
+              animationData={loadingAnimation}
+              loop
+              className="w-[100px] h-[100px]"
+            />
+          </div>
         ) : (
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-6 py-[1.5rem]">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 xl:gap-6 py-[1rem]">
             {filteredData.map((data: Board) => (
               <PostPreview
                 key={data.id}
